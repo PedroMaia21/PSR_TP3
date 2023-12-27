@@ -8,6 +8,14 @@
     <material>Gazebo/SkyBlue </material>
   </gazebo>
 
+  <gazebo reference="rotating_camera_base_link">
+    <material>Gazebo/SkyBlue </material>
+  </gazebo>
+
+  <gazebo reference="rotating_camera_link">
+    <material>Gazebo/White </material>
+  </gazebo>
+
   <gazebo reference="wheel_left_link">
     <mu1>0.1</mu1>
     <mu2>0.1</mu2>

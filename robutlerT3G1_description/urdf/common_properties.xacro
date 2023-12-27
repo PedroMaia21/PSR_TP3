@@ -41,4 +41,8 @@
   <material name="white">
     <color rgba="1.0 1.0 1.0 1.0"/>
   </material>
+
+  <material name="invisible">
+    <color rgba="1.0 1.0 1.0 0.05"/>
+  </material>
 </robot>
