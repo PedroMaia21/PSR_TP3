@@ -23,7 +23,7 @@
 				<origin xyz="0 0 0" rpy="0 0 0" />
 				<geometry>
 					<mesh
-						filename="package://robutlerT3G1_description/meshes/rgb_camera.stl"
+						filename="package://robutler1_description/meshes/rgb_camera.stl"
 						scale="1 1 1" />
 				</geometry>
 				<xacro:insert_block name="color_rviz" />
@@ -33,7 +33,7 @@
 				<origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
 				<geometry>
 					<mesh
-						filename="package://robutlerT3G1_description/meshes/rgb_camera.stl"
+						filename="package://robutler1_description/meshes/rgb_camera.stl"
 						scale="1 1 1" />
 				</geometry>
 			</collision>
