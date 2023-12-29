@@ -1,12 +1,4 @@
 <launch>
-    <!--Bloco 2: Criação de um world om gazebo.-->
+    <!-- Goes to the aws package to find the map-->
     <include file="$(find aws_robomaker_small_house_world)/launch/view_small_house.launch"/>
-    <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find aws-robomaker-small-house-world)/worlds/small_house.world"/>
-        <arg name="paused" value="false"/>
-        <arg name="use_sim_time" value="true"/>
-        <arg name="gui" value="true"/>
-        <arg name="headless" value="false"/>
-        <arg name="debug" value="false"/>
-    </include> -->
 </launch>

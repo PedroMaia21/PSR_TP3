@@ -1,10 +1,10 @@
 <launch>
     <!--Bloco 1: argumentos do launch file.-->
     <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
-    <arg name="x_pos" default="-6.5"/>
-    <arg name="y_pos" default="-3.0"/>
+    <arg name="x_pos" default="8.934732"/>
+    <arg name="y_pos" default="-1.828018"/>
     <arg name="z_pos" default="0.0"/>
-    <arg name="Y_val" default="1.57"/>
+    <arg name="Y_val" default="3.14"/>
 
     <!--Bloco 3: Carregamento do xacro do robot para o parâmetro robot_description.-->
     <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robutler1_description)/urdf/robutler1.urdf.xacro" />

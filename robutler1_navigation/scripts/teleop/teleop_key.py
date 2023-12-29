@@ -35,13 +35,13 @@ if os.name == 'nt':
 else:
   import tty, termios
 
-BURGER_MAX_LIN_VEL = 0.22
+BURGER_MAX_LIN_VEL = 2.2
 BURGER_MAX_ANG_VEL = 2.84
 
 WAFFLE_MAX_LIN_VEL = 2.6
 WAFFLE_MAX_ANG_VEL = 1.82
 
-LIN_VEL_STEP_SIZE = 0.01
+LIN_VEL_STEP_SIZE = 0.1
 ANG_VEL_STEP_SIZE = 0.1
 
 msg = """
@@ -137,7 +137,7 @@ if __name__=="__main__":
     rospy.init_node('turtlebot3_teleop')
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
-    turtlebot3_model = rospy.get_param("model", "burger")
+    turtlebot3_model = rospy.get_param("model", "waffle_pi")
 
     status = 0
     target_linear_vel   = 0.0
