@@ -120,7 +120,7 @@ def moveTo(feedback, x, y, z, R, P, Y, location, goal_publisher):
     # TODO know when move is finished
 
     try:
-        result_msg = rospy.wait_for_message('/move_base/result', MoveBaseActionResult, timeout=60)
+        result_msg = rospy.wait_for_message('/move_base/result', MoveBaseActionResult, timeout=360)
     except:
         print('Timeout waiting for moveto')
         # TODO
@@ -156,12 +156,29 @@ def main():
 
     entry = menu_handler.insert("bedroom", parent=h_first_entry,
                                 callback=partial(moveTo,
-                                                 x=-4.409525, y=-0.182006, z=0,
-                                                 R=-0.000007, P=0.003198, Y=1.980398,
+                                                 x=-6.172946, y=-0.411477, z=0,
+                                                 R=-0, P=0, Y=1.57,
                                                  location='bedroom',
                                                  goal_publisher=goal_publisher))
+    entry = menu_handler.insert("empty bedroom", parent=h_first_entry,
+                                callback=partial(moveTo,
+                                                 x=-5.334507, y=-3.049341, z=0,
+                                                 R=-0, P=0, Y=-2.632790,
+                                                 location='empty bedroom',
+                                                 goal_publisher=goal_publisher))
+    entry = menu_handler.insert("living room", parent=h_first_entry,
+                                callback=partial(moveTo,
+                                                 x=1.124490, y=-0.047983, z=0,
+                                                 R=-0, P=0, Y=-1.57,
+                                                 location='living room',
+                                                 goal_publisher=goal_publisher))
+    entry = menu_handler.insert("gym", parent=h_first_entry,
+                                callback=partial(moveTo,
+                                                 x=1.650620, y=4.189130, z=0,
+                                                 R=-0, P=0, Y=-0.865260,
+                                                 location='gym',
+                                                 goal_publisher=goal_publisher))
 
-    # entry = menu_handler.insert("living room", parent=h_first_entry, callback=moveToLivingRoom)
 
     makeMenuMarker("marker1")
 
