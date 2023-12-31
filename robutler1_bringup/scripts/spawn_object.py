@@ -20,7 +20,7 @@ def main():
     parser.add_argument('-l', '--location', type=str, help='', required=False,
                         default='on_bed')
     parser.add_argument('-o', '--object', type=str, help='', required=False,
-                        default='sphere_v')
+                        default='sphere_r')
 
     args = vars(parser.parse_args())  # creates a dictionary
     print(args)
@@ -45,12 +45,26 @@ def main():
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_bed_side_table'] = {'pose': p}
 
+    # on small room pose
+    p = Pose()
+    tempx = random.randrange(32,87)
+    if tempx > 61:
+        tempy = random.randrange(20,34)
+    else:
+        tempy = random.randrange(20,50)
+    p.position = Point(x=-tempx/10, y=-tempy/10, z=0.5)
+    tempY = random.randrange(0, 628)
+    q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
+    p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+    poses['on_small_room'] = {'pose': p}
+
+
     # define objects
     objects = {}
 
-    # add object sphere_v
-    f = open(package_path + 'sphere_v/model.sdf', 'r')
-    objects['sphere_v'] = {'name': 'sphere_v', 'sdf': f.read()}
+    # add object sphere_r
+    f = open(package_path + 'sphere_r/model.sdf', 'r')
+    objects['sphere_r'] = {'name': 'sphere_r', 'sdf': f.read()}
 
     # Check if given object and location are valid
 
@@ -77,10 +91,10 @@ def main():
 
     print('Spawning an object ...')
     uuid_str = str(uuid.uuid4())
-    service_client(objects['sphere_v']['name'] + '_' + uuid_str,
-                   objects['sphere_v']['sdf'],
-                   objects['sphere_v']['name'] + '_' + uuid_str,
-                   poses['on_bed']['pose'],
+    service_client(objects[args['object']]['name'] + '_' + uuid_str,
+                   objects[args['object']]['sdf'],
+                   objects[args['object']]['name'] + '_' + uuid_str,
+                   poses[args['location']]['pose'],
                    'world')
 
     print('Done')

@@ -178,6 +178,12 @@ def main():
                                                  R=-0, P=0, Y=-0.865260,
                                                  location='gym',
                                                  goal_publisher=goal_publisher))
+    entry = menu_handler.insert("next to desk", parent=h_first_entry,
+                                callback=partial(moveTo,
+                                                 x=-7.899468, y=0.981056, z=0,
+                                                 R=-0, P=0, Y=2.489528,
+                                                 location='next to the desk',
+                                                 goal_publisher=goal_publisher))
 
 
     makeMenuMarker("marker1")
