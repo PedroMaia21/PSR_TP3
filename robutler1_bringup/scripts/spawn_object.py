@@ -128,9 +128,29 @@ def main():
     f = open(package_path + 'sphere_r/model.sdf', 'r')
     objects['sphere_r'] = {'name': 'sphere_r', 'sdf': f.read()}
 
-    # add object sphere_r
-    # f = open(package_path + 'sphere_r/model.sdf', 'r')
-    # objects['sphere_r'] = {'name': 'sphere_r', 'sdf': f.read()}
+    # add object bottle_red_wine
+    f = open(package_path + 'bottle_red_wine/model.sdf', 'r')
+    objects['bottle_red_wine'] = {'name': 'bottle_red_wine', 'sdf': f.read()}
+
+    # add object coca_cola
+    f = open(package_path + 'coca_cola/model.sdf', 'r')
+    objects['coca_cola'] = {'name': 'coca_cola', 'sdf': f.read()}
+
+    # add object cube_b
+    f = open(package_path + 'cube_b/model.sdf', 'r')
+    objects['cube_b'] = {'name': 'cube_b', 'sdf': f.read()}
+
+    # add object human_female_1
+    f = open(package_path + 'human_female_1/model.sdf', 'r')
+    objects['human_female_1'] = {'name': 'human_female_1', 'sdf': f.read()}
+
+    # add object human_male_1_1
+    f = open(package_path + 'human_male_1_1/model.sdf', 'r')
+    objects['human_male_1_1'] = {'name': 'human_male_1_1', 'sdf': f.read()}
+
+    # add object laptop_pc_1
+    f = open(package_path + 'laptop_pc_1/model.sdf', 'r')
+    objects['laptop_pc_1'] = {'name': 'laptop_pc_1', 'sdf': f.read()}
 
     # Check if given object and location are valid
 
