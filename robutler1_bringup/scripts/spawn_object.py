@@ -45,6 +45,13 @@ def main():
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_bed_side_table'] = {'pose': p}
 
+    # on desk pose
+    p = Pose()
+    p.position = Point(x=-9.0489, y=2.0433, z=0.7644)
+    q = quaternion_from_euler(0, 0, 0)  # From euler angles (rpy) to quaternion
+    p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+    poses['on_desk'] = {'pose': p}
+
     # on small room pose
     p = Pose()
     tempx = random.randrange(32,87)
@@ -58,6 +65,61 @@ def main():
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_small_room'] = {'pose': p}
 
+    # on dinning table pose
+    p = Pose()
+    tempx = random.randrange(56,74)
+    tempy = random.randrange(10,13)
+    p.position = Point(x=tempx/10, y=tempy/10, z=0.817812)
+    q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
+    p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+    poses['on_dinning_table'] = {'pose': p}
+
+    # on bedroom floor pose
+    p = Pose()
+    tempx = random.randrange(35,83)
+    tempy = random.randrange(-8.6,2.4)
+    p.position = Point(x=-tempx/10, y=tempy/10, z=0.5)
+    q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
+    p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+    poses['on_bedroom_floor'] = {'pose': p}
+
+    # random in house pose
+       
+    p = Pose()                                       # this pose includes the biggest available zones in the whole house floor
+    tempx = random.randrange(-83,58)
+
+    choosezone = random.randrange(0,1)               # choose a randome zone between two zones with the same x value
+    choosezone1 = random.randrange(0,1)               # choose a randome zone between two zones with the same x value
+    
+    if tempx <= -35.5:                               # for x bettewn -8,3 and -3,5
+
+        if tempx >= -59 & choosezone == 0:
+                tempy = random.randrange(-47.5,-46.5)
+        else:
+            tempy = random.randrange(-8.6,2.4)
+
+    elif tempx > -35.5:                              # for x bettewn -3,5 and 5,8
+                                                   
+        if choosezone == 0: 
+            if tempx >= 9 & tempx <= 16.9:
+                if choosezone1 == 0:
+                    tempy = random.randrange(-45,-24)
+                else:
+                    tempy = random.randrange(-0.5,25.7)
+
+            elif tempx >= 16.9 & tempx <= 54:
+                tempy = random.randrange(-45,-24)
+
+            elif tempx >= -14.5 & tempx <= 9:
+                tempy = random.randrange(-0.5,25.7)
+
+        else:
+            tempy = random.randrange(-62.9,-53)
+
+    p.position = Point(x=tempx/10, y=tempy/10, z=0.5)
+    q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
+    p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
+    poses['random_in_house'] = {'pose': p}
 
     # define objects
     objects = {}
@@ -65,6 +127,10 @@ def main():
     # add object sphere_r
     f = open(package_path + 'sphere_r/model.sdf', 'r')
     objects['sphere_r'] = {'name': 'sphere_r', 'sdf': f.read()}
+
+    # add object sphere_r
+    # f = open(package_path + 'sphere_r/model.sdf', 'r')
+    # objects['sphere_r'] = {'name': 'sphere_r', 'sdf': f.read()}
 
     # Check if given object and location are valid
 
