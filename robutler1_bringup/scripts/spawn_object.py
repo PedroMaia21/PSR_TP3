@@ -16,11 +16,14 @@ def main():
     # Initialization
     # -------------------------------
 
-    parser = argparse.ArgumentParser(description='Script to spawn models in confined areas, but random positions.')
-    parser.add_argument('-l', '--location', type=str, help='' , required=False,
-                        default='on_bed')
-    parser.add_argument('-o', '--object', type=str, help='', required=False,
-                        default='sphere_r')
+    # Argparse description and arguments
+    parser = argparse.ArgumentParser(description='Script to spawn models in the house, in specific positions.')
+    parser.add_argument('-l', '--location', type=str, 
+                        help='Available locations are: on_bed; on_bed_side_table; on_desk; on_small_room; on_dinning_table; on_bedroom_floor; random_in_house;',
+                        required=False, default='on_bed')
+    parser.add_argument('-o', '--object', type=str,
+                        help='Available objects are: bottle_red_wine; coca_cola_cube_b; human_female_1; human_male_1_1; laptop_pc_1; shere_r;',
+                        required=False, default='sphere_r')
 
     args = vars(parser.parse_args())              # creates a dictionary
     print(args)
@@ -32,11 +35,13 @@ def main():
     # Poses
     # -------------------------------
 
-    # Defines poses where to put objects
-    # For the fixed poses, the coordinates are simply given through attribution
-    # For randome positions, in a certain area of the house, the coordinates are randomly generated, respecting the predefined limits
-    # The function "random.randrange()" only works with positive integers, therefor an offset and scale factor are necessary 
-    # The scale factor ensures that we only round the position value to the decimal place, not losing accuracy
+    """
+    Defines poses where to put objects
+    For the fixed poses, the coordinates are simply given through attribution
+    For randome positions, in a certain area of the house, the coordinates are randomly generated, respecting the predefined limits
+    The function "random.randrange()" only works with positive integers, therefor an offset and scale factor are necessary 
+    The scale factor ensures that we only round the position value to the decimal place, not losing accuracy
+    """
     
     poses = {}
 
@@ -176,10 +181,16 @@ def main():
               ' is unknown. Available objects are ' + str(list(objects.keys())))
 
     # -------------------------------
-    # MISSION (OBJECT+LOCATION) 
+    # MISSIONS
     # -------------------------------
 
-
+    missions = {'1': 'Move To',
+                '2': 'Take a Picture of Location',
+                '3': 'Is Someone Home?',
+                '4': 'Is Table Clean?',
+                '5': 'Search for Object in Location',
+                '6': 'How Many Objects are in the House?',
+                '7': 'Touch Object at Location'}
 
     # -------------------------------
     # ROS
