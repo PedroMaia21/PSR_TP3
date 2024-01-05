@@ -1,11 +1,15 @@
 # PSR_TP3
 Repository to the TP3 group project for the PSR 2023/2024 classes. 
 
-The members are: Maria Rodrigues¹, Pedro Maia², Salomé Dias³
+The members are: Maria Rodrigues ¹, Pedro Maia ², Salomé Dias ³
+
 
 ¹ 102384, rodrigues.mariaalves@ua.pt
+
 ² 102959, pedromaia@ua.pt
+
 ³ 118163, salome.marie@ua.pt
+
 
 The aim of this project is to control a robot and scenery, in order to being able to offer a solution to the following missions:
 
