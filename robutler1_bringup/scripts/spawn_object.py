@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import random
-
 import rospy
 import rospkg
 from gazebo_msgs.srv import SpawnModel
@@ -16,39 +15,49 @@ def main():
     # -------------------------------
     # Initialization
     # -------------------------------
+
     parser = argparse.ArgumentParser(description='Script to spawn models in confined areas, but random positions.')
-    parser.add_argument('-l', '--location', type=str, help='', required=False,
+    parser.add_argument('-l', '--location', type=str, help='' , required=False,
                         default='on_bed')
     parser.add_argument('-o', '--object', type=str, help='', required=False,
                         default='sphere_r')
 
-    args = vars(parser.parse_args())  # creates a dictionary
+    args = vars(parser.parse_args())              # creates a dictionary
     print(args)
 
     rospack = rospkg.RosPack()
     package_path = rospack.get_path('robutler1_description') + '/models/'
 
+    # -------------------------------
+    # Poses
+    # -------------------------------
+
     # Defines poses where to put objects
+    # For the fixed poses, the coordinates are simply given through attribution
+    # For randome positions, in a certain area of the house, the coordinates are randomly generated, respecting the predefined limits
+    # The function "random.randrange()" only works with positive integers, therefor an offset and scale factor are necessary 
+    # The scale factor ensures that we only round the position value to the decimal place, not losing accuracy
+    
     poses = {}
 
     # on bed pose
     p = Pose()
     p.position = Point(x=-6.033466, y=1.971232, z=0.644345)
-    q = quaternion_from_euler(0, 0, 0)  # From euler angles (rpy) to quaternion
+    q = quaternion_from_euler(0, 0, 0)              # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
-    poses['on_bed'] = {'pose': p}
+    poses['on_bed'] = {'pose': p}                   # Adds position to poses list
 
     # on bed-side-table pose
     p = Pose()
     p.position = Point(x=-4.489786, y=2.867268, z=0.679033)
-    q = quaternion_from_euler(0, 0, 0)  # From euler angles (rpy) to quaternion
+    q = quaternion_from_euler(0, 0, 0)              # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_bed_side_table'] = {'pose': p}
 
     # on desk pose
     p = Pose()
     p.position = Point(x=-9.0489, y=2.0433, z=0.7644)
-    q = quaternion_from_euler(0, 0, 0)  # From euler angles (rpy) to quaternion
+    q = quaternion_from_euler(0, 0, 0)              # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_desk'] = {'pose': p}
 
@@ -77,51 +86,54 @@ def main():
     # on bedroom floor pose
     p = Pose()
     tempx = random.randrange(35,83)
-    tempy = random.randrange(-8.6,2.4)
-    p.position = Point(x=-tempx/10, y=tempy/10, z=0.5)
+    tempy = random.randrange(0,11)                   # y from -0.90 to 0.20, we use a 10x factor and an offset (+9) to use the random.randrange function
+    p.position = Point(x=-tempx/10, y=(tempy-9)/10, z=0.5)
     q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_bedroom_floor'] = {'pose': p}
 
     # random in house pose
-       
     p = Pose()                                       # this pose includes the biggest available zones in the whole house floor
-    tempx = random.randrange(-83,58)
+    tempx = random.randrange(0,141)                  # x from -8.3 to 5.8, we use a 10x factor and an offset (+83)
 
     choosezone = random.randrange(0,1)               # choose a randome zone between two zones with the same x value
-    choosezone1 = random.randrange(0,1)               # choose a randome zone between two zones with the same x value
+    choosezone1 = random.randrange(0,1)              # choose a randome zone between two zones with the same x value
     
-    if tempx <= -35.5:                               # for x bettewn -8,3 and -3,5
+    # multiple empty spots on the house are avaliable 
+    if tempx <= 48:                                  # for x between -8,3 and -3,5
 
-        if tempx >= -59 & choosezone == 0:
-                tempy = random.randrange(-47.5,-46.5)
+        if tempx >= 24 & choosezone == 0:
+                tempy = random.randrange(15,16)      # for y between ymin -6.3 and ymax 2.6, we use a 10x factor and an offset (+63)
         else:
-            tempy = random.randrange(-8.6,2.4)
+            tempy = random.randrange(54,65)
 
-    elif tempx > -35.5:                              # for x bettewn -3,5 and 5,8
+    elif tempx > 48:                                 # for x between -3,5 and 5,8
                                                    
         if choosezone == 0: 
-            if tempx >= 9 & tempx <= 16.9:
+            if tempx >= 92 & tempx <= 100 :
                 if choosezone1 == 0:
-                    tempy = random.randrange(-45,-24)
+                    tempy = random.randrange(18,39)
                 else:
-                    tempy = random.randrange(-0.5,25.7)
+                    tempy = random.randrange(62,89)
 
-            elif tempx >= 16.9 & tempx <= 54:
-                tempy = random.randrange(-45,-24)
+            elif tempx >= 100 & tempx <= 137:
+                tempy = random.randrange(18,39)
 
-            elif tempx >= -14.5 & tempx <= 9:
-                tempy = random.randrange(-0.5,25.7)
+            elif tempx >= 68 & tempx <= 92:
+                tempy = random.randrange(62,89)
 
         else:
-            tempy = random.randrange(-62.9,-53)
+            tempy = random.randrange(0,10)
 
-    p.position = Point(x=tempx/10, y=tempy/10, z=0.5)
+    p.position = Point(x=(tempx-83)/10, y=(tempy-63)/10, z=0.5)
     q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['random_in_house'] = {'pose': p}
 
-    # define objects
+    # -------------------------------
+    # Objects
+    # -------------------------------
+
     objects = {}
 
     # add object sphere_r
@@ -152,6 +164,7 @@ def main():
     f = open(package_path + 'laptop_pc_1/model.sdf', 'r')
     objects['laptop_pc_1'] = {'name': 'laptop_pc_1', 'sdf': f.read()}
 
+
     # Check if given object and location are valid
 
     if not args['location'] in poses.keys():
@@ -161,6 +174,12 @@ def main():
     if not args['object'] in objects.keys():
         print('Object ' + args['object'] +
               ' is unknown. Available objects are ' + str(list(objects.keys())))
+
+    # -------------------------------
+    # MISSION (OBJECT+LOCATION) 
+    # -------------------------------
+
+
 
     # -------------------------------
     # ROS
@@ -185,6 +204,10 @@ def main():
 
     print('Done')
 
+
+    # -------------------------------
+    # MAIN
+    # -------------------------------
 
 if __name__ == '__main__':
     main()
