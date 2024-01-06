@@ -1,0 +1,6 @@
+<launch>
+  <!-- Show Gazebo GUI on launch -->
+  <include file="$(find robutler1_bringup)/launch/gazebo.launch">
+    <arg name="gui" value="false"/>
+  </include>
+</launch>
