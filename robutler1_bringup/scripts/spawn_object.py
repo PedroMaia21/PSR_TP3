@@ -181,18 +181,6 @@ def main():
               ' is unknown. Available objects are ' + str(list(objects.keys())))
 
     # -------------------------------
-    # MISSIONS
-    # -------------------------------
-
-    missions = {'1': 'Move To',
-                '2': 'Take a Picture of Location',
-                '3': 'Is Someone Home?',
-                '4': 'Is Table Clean?',
-                '5': 'Search for Object in Location',
-                '6': 'How Many Objects are in the House?',
-                '7': 'Touch Object at Location'}
-
-    # -------------------------------
     # ROS
     # -------------------------------
 
