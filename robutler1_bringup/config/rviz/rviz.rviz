@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Yolo Image1
       Splitter Ratio: 0.5
     Tree Height: 355
   - Class: rviz/Selection
@@ -334,9 +335,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.719796895980835
+      Pitch: 0.8047969341278076
       Target Frame: <Fixed Frame>
-      Yaw: 3.963578701019287
+      Yaw: 4.008578300476074
     Saved: ~
 Window Geometry:
   Displays:
