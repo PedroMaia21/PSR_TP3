@@ -2,8 +2,6 @@
 <robot name="turtlebot3_waffle_pi" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find robutler1_description)/urdf/common_properties.xacro"/>
   <xacro:include filename="$(find robutler1_description)/urdf/robutler1.gazebo.xacro"/>
-  <xacro:include filename="$(find robutler1_description)/urdf/rgb_camera.urdf.xacro"/>
-
   <link name="base_footprint"/>
 
   <joint name="base_joint" type="fixed">
@@ -230,7 +228,7 @@
         <cylinder length="0.05" radius="0.01" />
       </geometry>
       <origin xyz="0 0 0.025" rpy="0 0 0" />
-      <material name="blue" />
+      <material name="white" />
     </visual>
     <inertial>
       <mass value="0.04" />
@@ -248,41 +246,36 @@
     <child link="rotating_camera_base_link"/>
     <axis xyz="0 0 1" />
   </joint>
-
-  <!-- Rotating Camera support -->
-  <link name="rotating_camera_link">
-    <visual>
-      <geometry>
-        <sphere radius="0.02" />
-      </geometry>
-      <origin xyz="0 0 0" rpy="0 0 0" />
-      <material name="white" />
-    </visual>
-    <inertial>
-      <mass value="0.04" />
-      <origin xyz="0 0 0" />
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
-               iyy="0.001" iyz="0.0"
-               izz="0.001" />
-    </inertial>
-  </link>
-
-  <!-- Joint for Rotating Camera -->
-  <joint name="rotating_camera_joint" type="revolute">
-    <origin xyz="0 0 0.05" rpy="0 -1.57 0"/>
-    <parent link="rotating_camera_base_link"/>
-    <child link="rotating_camera_link"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="1000.0" lower="0" upper="2.36" velocity="0.5" />
-  </joint>
   
   <!-- new camera -->
-  <xacro:rgb_camera parent="rotating_camera_link" prefix="rgb_rotating" color_gazebo="White">
-      <origin xyz="0.015 0 0.012" rpy="0 0 0" />
-      <color_rgb_rviz>
-          <material name="white"/>
-      </color_rgb_rviz>
-  </xacro:rgb_camera>
+  <joint name="camera2_joint" type="fixed">
+    <origin xyz="0.073 -0.011 0.084" rpy="0 0 0"/>
+    <parent link="rotating_camera_base_link"/>
+    <child link="camera2_link"/>
+  </joint>
+
+  <link name="camera2_link">
+    <collision>
+      <origin xyz="0.005 0.011 0.013" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.015 0.030 0.027"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera2_rgb_joint" type="fixed">
+    <origin xyz="0.003 0.011 0.009" rpy="0 0 0"/>
+    <parent link="camera2_link"/>
+    <child link="camera2_rgb_frame"/>
+  </joint>
+  <link name="camera2_rgb_frame"/>
+
+  <joint name="camera2_rgb_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/>
+    <parent link="camera2_rgb_frame"/>
+    <child link="camera2_rgb_optical_frame"/>
+  </joint>
+  <link name="camera2_rgb_optical_frame"/>
 
 
 

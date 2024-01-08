@@ -1,4 +1,13 @@
 <launch>
-    <!-- Goes to the aws package to find the map-->
-    <include file="$(find aws_robomaker_small_house_world)/launch/view_small_house.launch"/>
+  <arg name="gui" default="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find robutler1_description)/worlds/worlds/modified_small_house.world"/>
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="$(arg gui)"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+  </include>
 </launch>
