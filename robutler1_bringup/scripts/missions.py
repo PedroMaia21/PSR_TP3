@@ -6,20 +6,15 @@ import argparse
 import os
 import subprocess
 
-def main():
+# Script for mission bringup by mission ID
 
-    # -------------------------------
-    # Initialization
-    # -------------------------------
+def main():
 
     # Argparse description and arguments
     parser = argparse.ArgumentParser(description='Script select missions and execute them.')
     parser.add_argument('-mid', '--mission_id', type=str,
                         help='Available missions by ID number: 1-Move To; 2-Take a Picture of Location; 3-Is Someone Home?; 4-Is Table Clean?; 5-Search for Object in Location,6-How Many Objects are in the House?; 7-Touch Object at Location',
                         required=False, default= '1')
-    parser.add_argument('-m', '--mission', type=str,
-                        help='Available missions by ID number: 1-Move To; 2-Take a Picture of Location; 3-Is Someone Home?; 4-Is Table Clean?; 5-Search for Object in Location,6-How Many Objects are in the House?; 7-Touch Object at Location',
-                        required=False, default= 'Move To')
 
     args = vars(parser.parse_args())
 
