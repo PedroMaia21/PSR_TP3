@@ -1,61 +1,90 @@
 #!/usr/bin/env python3
 
+'''
+Copyright (c) 2016, Nadya Ampilogova
+All rights reserved.
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+'''
+
+# Script for simulation
+# Launch gazebo world prior to run this script
+
+from __future__ import print_function
+import sys
+import os
+import rospkg
 import rospy
 import cv2
-import keyboard
-from cv_bridge import CvBridge, CvBridgeError
+from std_msgs.msg import String
 from sensor_msgs.msg import Image
-import os
+from cv_bridge import CvBridge, CvBridgeError
 
-# Image processing and capturing function
-class CameraNode:
+class TakePhoto:
+    def __init__(self, save_folder):
 
-    # -------------------------------
-    # Initialization
-    # -------------------------------
-
-    def __init__(self):
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber("/waffle_pi/camera/image_raw", Image, self.camera_callback)
+        self.image_received = False
+        self.save_folder = save_folder
 
-        # The os.path.expanduser expands the tilde in the path
-        self.image_dir = os.path.join(os.path.expanduser('~/catkin_ws/src/psr_trabalhofinal/PSR_TP3/Images'))
+        # Connect image topic
+        img_topic = "/camera2/rgb_rotating/image_raw"
+        self.image_sub = rospy.Subscriber(img_topic, Image, self.callback)
 
-        # Captures an image when 'p' is pressed
-        keyboard.on_press_key('p', self.capture_image)
+        # Allow up to one second to connection
+        rospy.sleep(1)
 
-    # -------------------------------
-    # Image Functions
-    # -------------------------------
+    def callback(self, data):
 
-    # Callback function to convert the ROS Image to an OpenCV image and display it
-    def camera_callback(self, data):
+        # Convert image to OpenCV format
         try:
-            self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-
+            cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:
             print(e)
 
-        cv2.imshow("Robot Camera", self.cv_image)
-        cv2.waitKey(1)
+        self.image_received = True
+        self.image = cv_image
 
-    # Callback function to capture an image when the 'p' key is pressed
-    def capture_image(self, event):
-        # The filename is created based on the timestamp and node name
-        filename = os.path.join(self.image_dir, rospy.get_name() + "_image_" + str(rospy.get_rostime().to_sec()) + ".jpg")
+    def take_picture(self, img_title):
+        if self.image_received:
+            # Save an image
+            cv2.imwrite(os.path.join(self.save_folder, img_title), self.image)
+            return True
+        else:
+            return False
 
-        # Saves the image
-        cv2.imwrite(filename, self.cv_image)
-        print("Image saved:", filename)
-
-# -------------------------------
-# MAIN
-# -------------------------------
-
-# Program execution starts here
 if __name__ == '__main__':
-    rospy.init_node("photo")
-    node = CameraNode()
 
-    # Keeps the program running
-    rospy.spin()
+    # Initialize
+    rospy.init_node('take_photo', anonymous=False)
+
+    package_name = 'robutler1_bringup'
+    rospack = rospkg.RosPack()
+    package_path = rospack.get_path(package_name)
+
+    # Specify the relative path within the package where the image should be saved
+    relative_path = 'saved_images' 
+
+    # Combine the package path and the relative path to get the full save folder path
+    save_folder = os.path.join(package_path, relative_path)
+
+    camera = TakePhoto(save_folder)
+
+    # Take a photo
+
+    # Use '_image_title' parameter from command line
+    # Default value is 'photo.jpg'
+    img_title = rospy.get_param('~image_title', 'photo.jpg')
+    # use the command: python take_photo.py _image_title:="new_title.jpg" 
+    # to set the param
+
+    if camera.take_picture(img_title):
+        rospy.loginfo("Saved image " + os.path.join(save_folder, img_title))
+    else:
+        rospy.loginfo("No images received")
+
+    # Sleep to give the last log messages time to be sent
+    rospy.sleep(1)

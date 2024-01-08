@@ -20,7 +20,7 @@
         <param name="queue_size" type="int" value="1" />
         <!-- image size to which to resize each input image before feeding into the
         network (the final output is rescaled to the original image size) -->
-        <param name="img_size" type="int" value="320" />
+        <param name="img_size" type="int" value="160" />
         <!-- flag whether to also publish image with the visualized detections -->
         <param name="visualize" type="bool" value="true" />
         <!-- 'cuda' or 'cpu' -->
