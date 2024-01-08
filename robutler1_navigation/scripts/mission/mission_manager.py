@@ -137,7 +137,7 @@ def deepCb(feedback):
     rospy.loginfo("The deep sub-menu has been found.")
 
 
-def moveTo(location, goal_publisher):
+def moveTo(feedback, location, goal_publisher):
 
     print('Called moving to ' + location)
     coordinates = locations.get(location)
@@ -191,7 +191,7 @@ def LookFor(feedback, object, spawn_location, goal_publisher):
     else:
         location = spawn_location
 
-    moveTo(location=location, goal_publisher=goal_publisher)
+    moveTo(feedback = "Sub_process",location=location, goal_publisher=goal_publisher)
 
     #lastly it checks
 
