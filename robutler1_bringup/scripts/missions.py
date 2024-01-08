@@ -22,7 +22,6 @@ def main():
                         required=False, default= 'Move To')
 
     args = vars(parser.parse_args())
-    print(args)
 
     # -------------------------------
     # MISSIONS
@@ -42,16 +41,20 @@ def main():
     mission_id = args['mission_id']
     Task = missions[mission_id]
 
+    rospack = rospkg.RosPack()
+
+    # 1 - 'Move To' mission 
+    if mission_id in missions and mission_id == '1':
+        package_path = rospack.get_path('robutler1_navigation')
+        script_path = os.path.join(package_path, 'scripts/mission/mission_manager.py')
+
     # 2 - 'Take a Picture of Location' mission 
     if mission_id in missions and mission_id == '2':
-        rospack = rospkg.RosPack()
-        package_path = rospack.get_path('robutler1_bringup')  # Assuming 'robutler1_bringup' is the correct package name
+        package_path = rospack.get_path('robutler1_bringup')
+        script_path = os.path.join(package_path, 'scripts/photo.py')
 
-        # Construct the path to the photo.py script
-        script_path = os.path.join(package_path, 'photo.py')
-
-        # Call the photo.py script using subprocess
-        subprocess.call(['python3', script_path])
+    # Call the mission script using subprocess
+    subprocess.call(['python3', script_path])
 
 # -------------------------------
 # MAIN
