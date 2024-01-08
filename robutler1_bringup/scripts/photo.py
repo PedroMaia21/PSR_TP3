@@ -52,7 +52,6 @@ class CameraNode:
 # MAIN
 # -------------------------------
 
-# Program execution starts here
 if __name__ == '__main__':
     rospy.init_node("photo")
     node = CameraNode()
