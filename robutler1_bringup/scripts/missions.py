@@ -53,6 +53,37 @@ def main():
         package_path = rospack.get_path('robutler1_bringup')
         script_path = os.path.join(package_path, 'scripts/photo.py')
 
+    # To update once mission scripts are available
+    # 3 - 'Is Someone Home?' mission 
+    """ if mission_id in missions and mission_id == '3':
+        package_path = rospack.get_path(' ')
+        script_path = os.path.join(package_path, ' ')
+    """
+
+    # 4 - 'Is Table Clean?' mission 
+    """ if mission_id in missions and mission_id == '4':
+        package_path = rospack.get_path(' ')
+        script_path = os.path.join(package_path, ' ')
+    """
+
+    # 5 - 'Search for Object in Location' mission 
+    """ if mission_id in missions and mission_id == '5':
+        package_path = rospack.get_path(' ')
+        script_path = os.path.join(package_path, ' ')
+    """
+
+    # 6 - 'How Many Objects are in the House?' mission 
+    """ if mission_id in missions and mission_id == '6':
+        package_path = rospack.get_path(' ')
+        script_path = os.path.join(package_path, ' ')
+    """
+
+    # 7 - 'Touch Object at Location' mission 
+    """ if mission_id in missions and mission_id == '7':
+        package_path = rospack.get_path(' ')
+        script_path = os.path.join(package_path, ' ')
+    """
+
     # Call the mission script using subprocess
     subprocess.call(['python3', script_path])
 
