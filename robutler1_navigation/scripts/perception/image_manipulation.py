@@ -8,10 +8,12 @@ import cv2
 import numpy as np
 
 def parse_arguments():
+
     limits = {'color_lower':[0,0,0],'color_upper':[255,255,255]}
     parser = argparse.ArgumentParser(description="Color Segmentation ROS Node")
     parser.add_argument("-c","--color", type=str, default="all", help="Color to look for", required=False)
     args = parser.parse_args()
+
     if args.color == "all":
         limits['color_lower']=[0,0,0]
         limits['color_upper']=[255,255,255]
@@ -23,6 +25,7 @@ def parse_arguments():
     elif args.color == "blue":
         limits['color_lower'] = [90, 50, 50] 
         limits['color_upper'] = [110, 255, 255]
+
     else:
         print(f"Invalid color specified: {args.color}. Using default color range.")
 
@@ -67,6 +70,10 @@ class ColorSegmentationNode:
 
     def run(self):
         rospy.spin()
+
+# -------------------------------
+# MAIN
+# -------------------------------
 
 if __name__ == '__main__':
     limits = parse_arguments()

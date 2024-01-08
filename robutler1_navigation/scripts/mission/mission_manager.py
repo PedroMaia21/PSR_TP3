@@ -160,24 +160,28 @@ def main():
                                                  R=-0, P=0, Y=1.57,
                                                  location='bedroom',
                                                  goal_publisher=goal_publisher))
+    
     entry = menu_handler.insert("empty bedroom", parent=h_first_entry,
                                 callback=partial(moveTo,
                                                  x=-5.334507, y=-3.049341, z=0,
                                                  R=-0, P=0, Y=-2.632790,
                                                  location='empty bedroom',
                                                  goal_publisher=goal_publisher))
+    
     entry = menu_handler.insert("living room", parent=h_first_entry,
                                 callback=partial(moveTo,
                                                  x=1.124490, y=-0.047983, z=0,
                                                  R=-0, P=0, Y=-1.57,
                                                  location='living room',
                                                  goal_publisher=goal_publisher))
+    
     entry = menu_handler.insert("gym", parent=h_first_entry,
                                 callback=partial(moveTo,
                                                  x=1.650620, y=4.189130, z=0,
                                                  R=-0, P=0, Y=-0.865260,
                                                  location='gym',
                                                  goal_publisher=goal_publisher))
+    
     entry = menu_handler.insert("next to desk", parent=h_first_entry,
                                 callback=partial(moveTo,
                                                  x=-7.899468, y=0.981056, z=0,
@@ -193,6 +197,10 @@ def main():
 
     rospy.spin()
 
+
+# -------------------------------
+# MAIN
+# -------------------------------
 
 if __name__ == '__main__':
     main()
