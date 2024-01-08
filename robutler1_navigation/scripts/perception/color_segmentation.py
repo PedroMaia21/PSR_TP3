@@ -14,6 +14,7 @@ def parse_arguments():
     parser.add_argument("-c","--color", type=str, default="all", help="Color to look for", required=False)
     args = parser.parse_args()
 
+    #This arguments are in hsv form
     if args.color == "all":
         limits['color_lower']=[0,0,0]
         limits['color_upper']=[255,255,255]
