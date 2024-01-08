@@ -200,13 +200,12 @@ def main():
                    objects[args['object']]['name'] + '_' + uuid_str,
                    poses[args['location']]['pose'],
                    'world')
-
     print('Done')
 
 
-    # -------------------------------
-    # MAIN
-    # -------------------------------
+# -------------------------------
+# MAIN
+# -------------------------------
 
 if __name__ == '__main__':
     main()
