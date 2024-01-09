@@ -7,9 +7,10 @@ from interactive_markers.interactive_marker_server import *
 from interactive_markers.menu_handler import *
 from visualization_msgs.msg import *
 import os
+import time
 import subprocess
 
-
+from std_msgs.msg import Bool
 from geometry_msgs.msg import Pose, Point, Quaternion, PoseStamped
 
 from tf.transformations import quaternion_from_euler
@@ -46,13 +47,13 @@ spawn_locations = {
 }
 
 objects = {
-    'red ball': 'sphere_r', 
-    'bottle': 'bottle_red_wine',
-    'can': 'coca_cola',
-    'blue cube': 'cube_b',
-    'woman': 'human_female_1',
-    'man': 'human_male_1_1',
-    'laptop': 'laptop_pc_1'
+    'red ball': {'name': 'sphere_r', 'color': 'red'}, 
+    'bottle': {'name': 'bottle_red_wine', 'color': 'all'},
+    'can': {'name': 'coca_cola', 'color': 'all'},
+    'blue cube': {'name': 'cube_b', 'color': 'blue'},
+    'woman': {'name': 'human_female_1', 'color': 'all'},
+    'man': {'name': 'human_male_1_1', 'color': 'all'},
+    'laptop': {'name': 'laptop_pc_1', 'color': 'all'}
 }
 
 def enableCb(feedback):
@@ -167,9 +168,23 @@ def moveTo(feedback, location, goal_publisher):
 def LookFor(feedback, object, spawn_location, goal_publisher):
     
     print('Called looking for ' + object + ' in ' + spawn_location)
+    spawn_object = objects.get(object)
+    
+    #start the yolo and color segmentation nodes
+    # object_color = spawn_object['color']
+    # package_path = rospack.get_path('robutler1_navigation')
+    # script_path = os.path.join(package_path, 'scripts/perception/color_segmentation.py')
+    # spawn_arguments = ['--color', object_color]
+    
+    # command = ['python3', script_path] + spawn_arguments
+    # subprocess.call(command)
+
+    # command = ['roslaunch', 'robutler1_navigation', 'detection.launch']
+    # subprocess.call(command)
 
     #spawn the object first
-    spawn_name = objects.get(object)
+    spawn_name = spawn_object['name']
+    print('spawn name '+ spawn_name)
     spawn_location_name = spawn_locations.get(spawn_location)
     package_path = rospack.get_path('robutler1_bringup')
     script_path = os.path.join(package_path, 'scripts/spawn_object.py')
@@ -193,7 +208,28 @@ def LookFor(feedback, object, spawn_location, goal_publisher):
 
     moveTo(feedback = "Sub_process",location=location, goal_publisher=goal_publisher)
 
-    #lastly it checks
+    #lastly it checks - must be added the camera rotation here
+    package_path = rospack.get_path('robutler1_navigation')
+    script_path = os.path.join(package_path, 'scripts/perception/object_detection.py')
+    spawn_arguments = ['--object', object]
+    
+    command = ['python3', script_path] + spawn_arguments
+    subprocess.call(command)
+    
+    tries = 0
+    while not check_result and tries < 60 :
+        tries += 1
+        time.sleep(1)
+        if check_result:
+            print("Check successful!")
+            break
+    
+    if not check_result:
+        print("Check unsuccessful after 60 seconds.")
+
+def resultCallback(msg):
+    global check_result
+    check_result = msg.data
 
 def main():
 
@@ -206,6 +242,8 @@ def main():
 
     # Create move_base_simple/goal publisher
     goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
+
+    result_subscriber = rospy.Subscriber('/result_topic', Bool, resultCallback)
 
     server = InteractiveMarkerServer("mission")
     print(server)

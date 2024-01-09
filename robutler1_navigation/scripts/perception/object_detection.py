@@ -5,11 +5,11 @@ import argparse
 from std_msgs.msg import String
 from std_msgs.msg import Bool
 
-def callback(data, object):
+def callback(data, target_object):
     rospy.loginfo("Received message: %s", data.data)
     
     # Check if the target string is the received data string
-    if object.lower() in data.data.lower():
+    if target_object.lower() in data.data.lower():
         result_msg = Bool(data=True)
         result_pub.publish(result_msg)
         rospy.loginfo("Detected: True")
