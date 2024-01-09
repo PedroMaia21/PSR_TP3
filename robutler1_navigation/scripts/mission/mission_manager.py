@@ -167,7 +167,7 @@ def moveTo(feedback, location, goal_publisher):
 
     print('move base completed goal with result ' + str(result_msg))
 
-def LookFor(feedback, object, spawn_location, goal_publisher):
+def lookFor(feedback, object, spawn_location, goal_publisher):
     
     print('Called looking for ' + object + ' in ' + spawn_location)
     spawn_object = objects.get(object)
@@ -250,6 +250,22 @@ def kill_script(process):
     if process is not None:
         process.terminate()
 
+def takePhoto(feedback, location, goal_publisher):
+    print('Called taking foto of ' + location)
+    
+    #first moves to the location
+    moveTo(feedback = "Sub_process",location=location, goal_publisher=goal_publisher)
+
+    #then takes the photo
+    package_path = rospack.get_path('robutler1_bringup')
+    script_path = os.path.join(package_path, 'scripts/photo.py')
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    photo_name = location + timestamp
+    arg = str('_image_title:=' + photo_name + '.jpg')
+    command = ['python3', script_path, arg ]
+    subprocess.call(command)
+
+
 def main():
 
     global server
@@ -290,17 +306,33 @@ def main():
     h_second_entry = menu_handler.insert("Look for")
     sub_handler1 = menu_handler.insert("red ball", parent=h_second_entry)
     entry = menu_handler.insert("in the small room", parent=sub_handler1,
-                                callback=partial(LookFor, object='red ball', spawn_location='small room', goal_publisher=goal_publisher))
+                                callback=partial(lookFor, object='red ball', spawn_location='small room', goal_publisher=goal_publisher))
     sub_handler2 = menu_handler.insert("laptop", parent=h_second_entry)
     entry = menu_handler.insert("in the room desk", parent=sub_handler2,
-                                callback=partial(LookFor, object='laptop', spawn_location='desk', goal_publisher=goal_publisher))
+                                callback=partial(lookFor, object='laptop', spawn_location='desk', goal_publisher=goal_publisher))
     sub_handler3 = menu_handler.insert("man", parent=h_second_entry)
     entry = menu_handler.insert("in the bedromm", parent=sub_handler3,
-                                callback=partial(LookFor, object='man', spawn_location='bedroom', goal_publisher=goal_publisher))
+                                callback=partial(lookFor, object='man', spawn_location='bedroom', goal_publisher=goal_publisher))
     sub_handler4 = menu_handler.insert("woman", parent=h_second_entry)
     entry = menu_handler.insert("in the bedroom", parent=sub_handler4,
-                                callback=partial(LookFor, object='woman', spawn_location='bedroom', goal_publisher=goal_publisher))
-                                
+                                callback=partial(lookFor, object='woman', spawn_location='bedroom', goal_publisher=goal_publisher))
+    
+    h_third_entry = menu_handler.insert("Thake photo of")
+    entry = menu_handler.insert("kitchen", parent=h_third_entry,
+                                callback=partial(takePhoto, location='kitchen', goal_publisher=goal_publisher))
+
+    entry = menu_handler.insert("bedroom", parent=h_third_entry,
+                                callback=partial(takePhoto, location='bedroom', goal_publisher=goal_publisher))
+    
+    entry = menu_handler.insert("small room", parent=h_third_entry,
+                                callback=partial(takePhoto, location='small room', goal_publisher=goal_publisher))
+    
+    entry = menu_handler.insert("living room", parent=h_third_entry,
+                                callback=partial(takePhoto, location='living room', goal_publisher=goal_publisher))
+    
+    entry = menu_handler.insert("gym", parent=h_third_entry,
+                                callback=partial(takePhoto, location='gym', goal_publisher=goal_publisher))
+    
     makeMenuMarker("marker1")
 
     menu_handler.apply(server, "marker1")
