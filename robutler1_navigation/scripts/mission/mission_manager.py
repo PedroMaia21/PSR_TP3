@@ -167,6 +167,13 @@ def moveTo(feedback, location, goal_publisher):
 
     print('move base completed goal with result ' + str(result_msg))
 
+def moveToAllHouse(goal_publisher):
+    moveTo(feedback = "Sub_process",location="kitchen", goal_publisher=goal_publisher)
+    moveTo(feedback = "Sub_process",location="living room", goal_publisher=goal_publisher)
+    moveTo(feedback = "Sub_process",location="small room", goal_publisher=goal_publisher)
+    moveTo(feedback = "Sub_process",location="bedroom", goal_publisher=goal_publisher)
+    moveTo(feedback = "Sub_process",location="gym", goal_publisher=goal_publisher)
+
 def lookFor(feedback, object, spawn_location, goal_publisher):
     
     print('Called looking for ' + object + ' in ' + spawn_location)
@@ -196,38 +203,43 @@ def lookFor(feedback, object, spawn_location, goal_publisher):
 
     #then go there
     if spawn_location == 'bed' or spawn_location == 'bed side table':
-        location = 'bedroom'
+        location = ['bedroom']
     elif spawn_location == 'desk':
-        location = 'next to desk'
+        location = ['next to desk']
     elif spawn_location == 'dinning table':
-        location = 'kitchen'
+        location = ['kitchen']
     elif spawn_location == 'house':
-        location = 'living room'    #needs to be changed
+        location = ['kitchen', 'living room', 'small room', 'bedroom', 'gym']
     else:
-        location = spawn_location
+        location = [spawn_location]
 
-    moveTo(feedback = "Sub_process",location=location, goal_publisher=goal_publisher)
+    for item in location:
+        moveTo(feedback = "Sub_process",location=item, goal_publisher=goal_publisher)
 
-    #lastly it checks - must be added the camera rotation here
-    search_name = spawn_object['search_name']
-    package_path = rospack.get_path('robutler1_navigation')
-    script_path = os.path.join(package_path, 'scripts/perception/object_detection.py')
-    spawn_arguments = ['--object', search_name]
-    
-    command = ['python3', script_path] + spawn_arguments
-    subprocess.Popen(command)
-    
-    global check_result
-    tries = 0
-    while tries < 60 :
-        tries += 1
-        time.sleep(1)
-        if check_result:
-            print("Check successful!")
+        #lastly it checks - must be added the camera rotation here
+        search_name = spawn_object['search_name']
+        package_path = rospack.get_path('robutler1_navigation')
+        script_path = os.path.join(package_path, 'scripts/perception/object_detection.py')
+        spawn_arguments = ['--object', search_name]
+        
+        command = ['python3', script_path] + spawn_arguments
+        subprocess.Popen(command)
+        
+        global check_result
+        tries = 0
+        check_successful = False
+        while tries < 60 :
+            tries += 1
+            time.sleep(1)
+            if check_result:
+                print("Check successful!")
+                check_successful = True
+                break
+
+        if not check_successful:
+            print("Check unsuccessful after 60 seconds.")
+        if check_successful:
             break
-    
-    if not check_result:
-        print("Check unsuccessful after 60 seconds.")
 
 def resultCallback(msg):
     global check_result
@@ -311,11 +323,15 @@ def main():
     entry = menu_handler.insert("in the room desk", parent=sub_handler2,
                                 callback=partial(lookFor, object='laptop', spawn_location='desk', goal_publisher=goal_publisher))
     sub_handler3 = menu_handler.insert("man", parent=h_second_entry)
-    entry = menu_handler.insert("in the bedromm", parent=sub_handler3,
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler3,
                                 callback=partial(lookFor, object='man', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler3,
+                                callback=partial(lookFor, object='man', spawn_location='house', goal_publisher=goal_publisher))
     sub_handler4 = menu_handler.insert("woman", parent=h_second_entry)
     entry = menu_handler.insert("in the bedroom", parent=sub_handler4,
                                 callback=partial(lookFor, object='woman', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler4,
+                                callback=partial(lookFor, object='woman', spawn_location='house', goal_publisher=goal_publisher))
     
     h_third_entry = menu_handler.insert("Thake photo of")
     entry = menu_handler.insert("kitchen", parent=h_third_entry,
