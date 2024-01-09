@@ -59,7 +59,7 @@ class ColorSegmentationNode:
             segmented_image = cv2.bitwise_and(camera_image, camera_image, mask=mask)
 
             # Blend the segmented image with the original image
-            alpha = 0.9  # Adjust the alpha value for blending
+            alpha = 0.95  # Adjust the alpha value for blending
             blended_image = cv2.addWeighted(camera_image, 1 - alpha, segmented_image, alpha, 0)
 
             # Convert the segmented image back to ROS format and publish

@@ -73,7 +73,7 @@ def main():
         tempy = random.randrange(20,34)
     else:
         tempy = random.randrange(20,50)
-    p.position = Point(x=-tempx/10, y=-tempy/10, z=0.5)
+    p.position = Point(x=-tempx/10, y=-tempy/10, z=0.3)
     tempY = random.randrange(0, 628)
     q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
@@ -92,7 +92,7 @@ def main():
     p = Pose()
     tempx = random.randrange(35,83)
     tempy = random.randrange(0,11)                   # y from -0.90 to 0.20, we use a 10x factor and an offset (+9) to use the random.randrange function
-    p.position = Point(x=-tempx/10, y=(tempy-9)/10, z=0.5)
+    p.position = Point(x=-tempx/10, y=(tempy-9)/10, z=0.3)
     q = quaternion_from_euler(0, 0, tempY/100-3.14)  # From euler angles (rpy) to quaternion
     p.orientation = Quaternion(x=q[0], y=q[1], z=q[2], w=q[3])
     poses['on_bedroom_floor'] = {'pose': p}

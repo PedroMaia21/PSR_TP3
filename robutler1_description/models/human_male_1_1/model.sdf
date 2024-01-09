@@ -82,8 +82,8 @@
         </geometry>
        <material>
           <script>
-            <uri>model://human_male_1/materials/scripts</uri>
-            <uri>model://human_male_1/materials/textures</uri>
+            <uri>model://human_male_1_1/materials/scripts</uri>
+            <uri>model://human_male_1_1/materials/textures</uri>
             <name>hair_m_1</name>
           </script>
         </material>

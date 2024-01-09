@@ -16,6 +16,8 @@ from geometry_msgs.msg import Pose, Point, Quaternion, PoseStamped
 from tf.transformations import quaternion_from_euler
 from move_base_msgs.msg import MoveBaseActionResult
 
+check_result = None
+color_process = None
 server = None
 marker_pos = 1
 
@@ -47,13 +49,13 @@ spawn_locations = {
 }
 
 objects = {
-    'red ball': {'name': 'sphere_r', 'color': 'red'}, 
-    'bottle': {'name': 'bottle_red_wine', 'color': 'all'},
-    'can': {'name': 'coca_cola', 'color': 'all'},
-    'blue cube': {'name': 'cube_b', 'color': 'blue'},
-    'woman': {'name': 'human_female_1', 'color': 'all'},
-    'man': {'name': 'human_male_1_1', 'color': 'all'},
-    'laptop': {'name': 'laptop_pc_1', 'color': 'all'}
+    'red ball': {'name': 'sphere_r','search_name': 'ball', 'color': 'red'}, 
+    'bottle': {'name': 'bottle_red_wine','search_name': 'bottle', 'color': 'all'},
+    'can': {'name': 'coca_cola','search_name': 'cup', 'color': 'all'},
+    'blue cube': {'name': 'cube_b','search_name': 'box', 'color': 'blue'}, #needs checking the search name
+    'woman': {'name': 'human_female_1','search_name': 'person', 'color': 'all'},
+    'man': {'name': 'human_male_1_1', 'search_name': 'person', 'color': 'all'},
+    'laptop': {'name': 'laptop_pc_1', 'search_name': 'laptop', 'color': 'all'}
 }
 
 def enableCb(feedback):
@@ -170,21 +172,19 @@ def LookFor(feedback, object, spawn_location, goal_publisher):
     print('Called looking for ' + object + ' in ' + spawn_location)
     spawn_object = objects.get(object)
     
-    #start the yolo and color segmentation nodes
-    # object_color = spawn_object['color']
-    # package_path = rospack.get_path('robutler1_navigation')
-    # script_path = os.path.join(package_path, 'scripts/perception/color_segmentation.py')
-    # spawn_arguments = ['--color', object_color]
+    #start the color segmentation node
+    global color_process
+
+    object_color = spawn_object['color']
+    if color_process == None:
+        color_process = run_script(object_color)
+    else:
+        kill_script(color_process)
+        color_process = run_script(object_color)
+
     
-    # command = ['python3', script_path] + spawn_arguments
-    # subprocess.call(command)
-
-    # command = ['roslaunch', 'robutler1_navigation', 'detection.launch']
-    # subprocess.call(command)
-
     #spawn the object first
     spawn_name = spawn_object['name']
-    print('spawn name '+ spawn_name)
     spawn_location_name = spawn_locations.get(spawn_location)
     package_path = rospack.get_path('robutler1_bringup')
     script_path = os.path.join(package_path, 'scripts/spawn_object.py')
@@ -209,15 +209,17 @@ def LookFor(feedback, object, spawn_location, goal_publisher):
     moveTo(feedback = "Sub_process",location=location, goal_publisher=goal_publisher)
 
     #lastly it checks - must be added the camera rotation here
+    search_name = spawn_object['search_name']
     package_path = rospack.get_path('robutler1_navigation')
     script_path = os.path.join(package_path, 'scripts/perception/object_detection.py')
-    spawn_arguments = ['--object', object]
+    spawn_arguments = ['--object', search_name]
     
     command = ['python3', script_path] + spawn_arguments
-    subprocess.call(command)
+    subprocess.Popen(command)
     
+    global check_result
     tries = 0
-    while not check_result and tries < 60 :
+    while tries < 60 :
         tries += 1
         time.sleep(1)
         if check_result:
@@ -230,11 +232,27 @@ def LookFor(feedback, object, spawn_location, goal_publisher):
 def resultCallback(msg):
     global check_result
     check_result = msg.data
+    
+    
+def run_script(object_color):
+    # Start the script in a separate process
+    package_path = rospack.get_path('robutler1_navigation')
+    script_path = os.path.join(package_path, 'scripts/perception/color_segmentation.py')
+    color_arguments = ['--color', object_color]
+    command = ['python3', script_path] + color_arguments
+    process = subprocess.Popen(command)
+
+    # Return the process object so it can be used to terminate the script later
+    return process
+
+def kill_script(process):
+    # Check if the process is not None before attempting to terminate
+    if process is not None:
+        process.terminate()
 
 def main():
 
     global server
-
     # -------------------------------
     # Initialization
     # -------------------------------
@@ -271,8 +289,17 @@ def main():
     
     h_second_entry = menu_handler.insert("Look for")
     sub_handler1 = menu_handler.insert("red ball", parent=h_second_entry)
-    entry = menu_handler.insert("in small room", parent=sub_handler1,
-                                callback=partial(LookFor, object='red ball', spawn_location='small room',goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler1,
+                                callback=partial(LookFor, object='red ball', spawn_location='small room', goal_publisher=goal_publisher))
+    sub_handler2 = menu_handler.insert("laptop", parent=h_second_entry)
+    entry = menu_handler.insert("in the room desk", parent=sub_handler2,
+                                callback=partial(LookFor, object='laptop', spawn_location='desk', goal_publisher=goal_publisher))
+    sub_handler3 = menu_handler.insert("man", parent=h_second_entry)
+    entry = menu_handler.insert("in the bedromm", parent=sub_handler3,
+                                callback=partial(LookFor, object='man', spawn_location='bedroom', goal_publisher=goal_publisher))
+    sub_handler4 = menu_handler.insert("woman", parent=h_second_entry)
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler4,
+                                callback=partial(LookFor, object='woman', spawn_location='bedroom', goal_publisher=goal_publisher))
                                 
     makeMenuMarker("marker1")
 
