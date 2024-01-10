@@ -14,17 +14,18 @@ def parse_arguments():
     parser.add_argument("-c","--color", type=str, default="all", help="Color to look for", required=False)
     args = parser.parse_args()
 
+    #This arguments are in hsv form
     if args.color == "all":
         limits['color_lower']=[0,0,0]
         limits['color_upper']=[255,255,255]
     
     elif args.color == "red":
-        limits['color_lower'] = [0, 0, 100]  
-        limits['color_upper'] = [80, 80, 255]  
+        limits['color_lower'] = [0, 100, 100]  
+        limits['color_upper'] = [10, 255, 255] 
     
     elif args.color == "blue":
-        limits['color_lower'] = [100, 0, 0] 
-        limits['color_upper'] = [255, 80, 80]
+        limits['color_lower'] = [90, 50, 50] 
+        limits['color_upper'] = [110, 255, 255]
 
     else:
         print(f"Invalid color specified: {args.color}. Using default color range.")
@@ -40,10 +41,10 @@ class ColorSegmentationNode:
         self.bridge = CvBridge()
 
         # Subscribe to the camera feed
-        rospy.Subscriber('/yolov7/yolov7/visualization', Image, self.camera_callback)
+        rospy.Subscriber('/camera2/rgb_rotating/image_raw', Image, self.camera_callback)
 
         # Publisher for downsampled image
-        self.downsampled_pub = rospy.Publisher('/manipulated_image', Image, queue_size=1)
+        self.segmented_pub = rospy.Publisher('/manipulated_image', Image, queue_size=1)
 
         self.lower_color = np.array(color_lower)
         self.upper_color = np.array(color_upper)
@@ -52,17 +53,18 @@ class ColorSegmentationNode:
         try:
             # Convert camera image message to OpenCV format
             camera_image = self.bridge.imgmsg_to_cv2(camera_image_msg, 'bgr8')
+            hsv_image = cv2.cvtColor(camera_image, cv2.COLOR_BGR2HSV)            
 
-            mask = cv2.inRange(camera_image, self.lower_color, self.upper_color)
+            mask = cv2.inRange(hsv_image, self.lower_color, self.upper_color)
             segmented_image = cv2.bitwise_and(camera_image, camera_image, mask=mask)
 
-            # Downsample the image (adjust the scale factor based on your requirements)
-            scale_factor = 0.5
-            downsampled_image = cv2.resize(segmented_image, None, fx=scale_factor, fy=scale_factor)
+            # Blend the segmented image with the original image
+            alpha = 0.95  # Adjust the alpha value for blending
+            blended_image = cv2.addWeighted(camera_image, 1 - alpha, segmented_image, alpha, 0)
 
-            # Convert the downsampled image back to ROS format and publish
-            downsampled_image_msg = self.bridge.cv2_to_imgmsg(downsampled_image, 'bgr8')
-            self.downsampled_pub.publish(downsampled_image_msg)
+            # Convert the segmented image back to ROS format and publish
+            blended_image_msg = self.bridge.cv2_to_imgmsg(blended_image, 'bgr8')
+            self.segmented_pub.publish(blended_image_msg)
 
         except Exception as e:
             rospy.logerr(f"Error processing camera image: {str(e)}")

@@ -82,8 +82,8 @@
         </geometry>
        <material>
           <script>
-            <uri>model://human_male_1/materials/scripts</uri>
-            <uri>model://human_male_1/materials/textures</uri>
+            <uri>model://human_male_1_1/materials/scripts</uri>
+            <uri>model://human_male_1_1/materials/textures</uri>
             <name>hair_m_1</name>
           </script>
         </material>
@@ -308,7 +308,7 @@
      
       </collision>
     </link>
-    <static>1</static>
+    <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
   </model>
 </sdf>

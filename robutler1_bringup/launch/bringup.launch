@@ -7,7 +7,7 @@
     <arg name="Y_val" default="3.14"/>
 
     <!--Bloco 3: Carregamento do xacro do robot para o parâmetro robot_description.-->
-    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robutler1_description)/urdf/robutler1.urdf.xacro" />
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find robutler1_description)/urdf/turtlebot3_manipulation_robot.urdf.xacro" />
 
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen"/>
