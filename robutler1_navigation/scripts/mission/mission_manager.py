@@ -31,10 +31,15 @@ rospack = rospkg.RosPack()
 
 locations = {
     'kitchen': {'x': 6.568593, 'y': -1.788789, 'z': 0, 'R': 0, 'P': 0, 'Y': -1.504141},
+    'kitchen view': {'x': 5.107781, 'y': -4.758521, 'z': 0, 'R': 0, 'P': 0, 'Y': 0.995231},
     'bedroom': {'x': -6.172946, 'y': -0.411477, 'z': 0, 'R': 0, 'P': 0, 'Y': 1.57},
+    'bedroom view': {'x': -2.909060, 'y': -0.672549, 'z': 0, 'R': 0, 'P': 0, 'Y': 2.620778},
     'small room': {'x': -5.334507, 'y': -3.049341, 'z': 0, 'R': 0, 'P': 0, 'Y': -2.632790},
+    'small room view': {'x':-3.068657, 'y': -2.040436, 'z': 0, 'R': 0, 'P': 0, 'Y': -2.632790},
     'living room': {'x': 1.124490, 'y': -0.047983, 'z': 0, 'R': 0, 'P': 0, 'Y': -1.57},
+    'living room view': {'x': 4.491955, 'y': 1.006725, 'z': 0, 'R': 0, 'P': 0, 'Y': -2.463953},
     'gym': {'x': 1.650620, 'y': 4.189130, 'z': 0, 'R': 0, 'P': 0, 'Y': -0.865260},
+    'gym view': {'x': -1.930821, 'y': 0.729338, 'z': 0, 'R': 0, 'P': 0, 'Y': 0.613104},
     'next to desk': {'x': -7.899468, 'y': 0.981056, 'z': 0, 'R': 0, 'P': 0, 'Y': 2.489528},
 }
 
@@ -167,13 +172,6 @@ def moveTo(feedback, location, goal_publisher):
 
     print('move base completed goal with result ' + str(result_msg))
 
-def moveToAllHouse(goal_publisher):
-    moveTo(feedback = "Sub_process",location="kitchen", goal_publisher=goal_publisher)
-    moveTo(feedback = "Sub_process",location="living room", goal_publisher=goal_publisher)
-    moveTo(feedback = "Sub_process",location="small room", goal_publisher=goal_publisher)
-    moveTo(feedback = "Sub_process",location="bedroom", goal_publisher=goal_publisher)
-    moveTo(feedback = "Sub_process",location="gym", goal_publisher=goal_publisher)
-
 def lookFor(feedback, object, spawn_location, goal_publisher):
     
     print('Called looking for ' + object + ' in ' + spawn_location)
@@ -207,11 +205,11 @@ def lookFor(feedback, object, spawn_location, goal_publisher):
     elif spawn_location == 'desk':
         location = ['next to desk']
     elif spawn_location == 'dinning table':
-        location = ['kitchen']
+        location = ['kitchen view']
     elif spawn_location == 'house':
-        location = ['kitchen', 'living room', 'small room', 'bedroom', 'gym']
+        location = ['kitchen view', 'living room view', 'small room view', 'bedroom view', 'gym view']
     else:
-        location = [spawn_location]
+        location = [spawn_location + ' view'] 
 
     for item in location:
         moveTo(feedback = "Sub_process",location=item, goal_publisher=goal_publisher)
