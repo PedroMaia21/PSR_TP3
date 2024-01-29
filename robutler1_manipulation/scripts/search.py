@@ -13,7 +13,7 @@ class ArmManipulator:
 
         # MoveIt Commander
         self.robot_commander = RobotCommander()
-        self.arm_group = MoveGroupCommander("robutler_arm")  # "arm" is the name of the move group for the robot arm
+        self.arm_group = MoveGroupCommander("arm")  # "arm" is the name of the move group for the robot arm
         self.arm_group.set_planner_id("RRTConnectkConfigDefault")
 
         # Subscriber to check result
@@ -29,7 +29,7 @@ class ArmManipulator:
 
     def move_arm_to_search_pose(self):
         # Move the arm to the predefined "search" pose
-        self.arm_group.set_named_target("searching")
+        self.arm_group.set_named_target("home")
         self.arm_group.go(wait=True)
 
     def rotate_first_joint_slowly(self):

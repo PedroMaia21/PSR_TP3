@@ -195,9 +195,9 @@ def main():
 
     print('Spawning an object ...')
     uuid_str = str(uuid.uuid4())
-    service_client(objects[args['object']]['name'] + '_' + uuid_str,
+    service_client(objects[args['object']]['name'] + '-' + uuid_str,
                    objects[args['object']]['sdf'],
-                   objects[args['object']]['name'] + '_' + uuid_str,
+                   objects[args['object']]['name'] + '-' + uuid_str,
                    poses[args['location']]['pose'],
                    'world')
     print('Done')

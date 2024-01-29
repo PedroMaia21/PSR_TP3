@@ -16,4 +16,7 @@
 
     <!--Launch mission manager-->
     <node pkg="robutler1_navigation" type="mission_manager.py" name="mission_manager" output="screen"/>
+
+    <!--Launch the menu-->
+    <include file="$(find robutler1_interface)/launch/menu.launch"/>
 </launch>
