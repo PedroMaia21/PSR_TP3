@@ -25,7 +25,7 @@ def parse_arguments():
     
     elif args.color == "blue":
         limits['color_lower'] = [90, 50, 50] 
-        limits['color_upper'] = [110, 255, 255]
+        limits['color_upper'] = [120, 255, 255]
 
     else:
         print(f"Invalid color specified: {args.color}. Using default color range.")

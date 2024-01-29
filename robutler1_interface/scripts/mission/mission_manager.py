@@ -57,7 +57,7 @@ objects = {
     'red ball': {'name': 'sphere_r','search_name': 'ball', 'color': 'red'}, 
     'bottle': {'name': 'bottle_red_wine','search_name': 'bottle', 'color': 'all'},
     'can': {'name': 'coca_cola','search_name': 'cup', 'color': 'all'},
-    'blue cube': {'name': 'cube_b','search_name': 'box', 'color': 'blue'}, #needs checking the search name
+    'blue cube': {'name': 'cube_b','search_name': 'tv', 'color': 'blue'}, #needs checking the search name
     'woman': {'name': 'human_female_4','search_name': 'person', 'color': 'all'},
     'man': {'name': 'human_male_4', 'search_name': 'person', 'color': 'all'},
     'laptop': {'name': 'laptop_pc_1', 'search_name': 'laptop', 'color': 'all'}
@@ -317,20 +317,99 @@ def main():
     sub_handler1 = menu_handler.insert("red ball", parent=h_second_entry)
     entry = menu_handler.insert("in the small room", parent=sub_handler1,
                                 callback=partial(lookFor, object='red ball', spawn_location='small room', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='bed', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed side table", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='bed side table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the room desk", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='desk', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the dinning table", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='dinning table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler1,
+                                callback=partial(lookFor, object='red ball', spawn_location='house', goal_publisher=goal_publisher))
+
     sub_handler2 = menu_handler.insert("laptop", parent=h_second_entry)
     entry = menu_handler.insert("in the room desk", parent=sub_handler2,
                                 callback=partial(lookFor, object='laptop', spawn_location='desk', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='bed', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed side table", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='bed side table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='small room', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the dinning table", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='dinning table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler2,
+                                callback=partial(lookFor, object='laptop', spawn_location='house', goal_publisher=goal_publisher))
+
     sub_handler3 = menu_handler.insert("man", parent=h_second_entry)
     entry = menu_handler.insert("in the bedroom", parent=sub_handler3,
                                 callback=partial(lookFor, object='man', spawn_location='bedroom', goal_publisher=goal_publisher))
     entry = menu_handler.insert("in the house", parent=sub_handler3,
                                 callback=partial(lookFor, object='man', spawn_location='house', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler3,
+                                callback=partial(lookFor, object='man', spawn_location='small room', goal_publisher=goal_publisher))
+
     sub_handler4 = menu_handler.insert("woman", parent=h_second_entry)
     entry = menu_handler.insert("in the bedroom", parent=sub_handler4,
                                 callback=partial(lookFor, object='woman', spawn_location='bedroom', goal_publisher=goal_publisher))
     entry = menu_handler.insert("in the house", parent=sub_handler4,
                                 callback=partial(lookFor, object='woman', spawn_location='house', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler4,
+                                callback=partial(lookFor, object='woman', spawn_location='small room', goal_publisher=goal_publisher))
+
+    sub_handler5 = menu_handler.insert("bottle", parent=h_second_entry)
+    entry = menu_handler.insert("in the room desk", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='desk', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='bed', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed side table", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='bed side table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='small room', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the dinning table", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='dinning table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler5,
+                                callback=partial(lookFor, object='bottle', spawn_location='house', goal_publisher=goal_publisher))
     
+    sub_handler6 = menu_handler.insert("can", parent=h_second_entry)
+    entry = menu_handler.insert("in the room desk", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='desk', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='bed', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed side table", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='bed side table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='small room', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the dinning table", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='dinning table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler6,
+                                callback=partial(lookFor, object='can', spawn_location='house', goal_publisher=goal_publisher))
+
+    sub_handler7 = menu_handler.insert("blue cube", parent=h_second_entry)
+    entry = menu_handler.insert("in the room desk", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='desk', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='bed', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bed side table", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='bed side table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the small room", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='small room', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the dinning table", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='dinning table', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the bedroom", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='bedroom', goal_publisher=goal_publisher))
+    entry = menu_handler.insert("in the house", parent=sub_handler7,
+                                callback=partial(lookFor, object='blue cube', spawn_location='house', goal_publisher=goal_publisher))
+
     h_third_entry = menu_handler.insert("Thake photo of")
     entry = menu_handler.insert("kitchen", parent=h_third_entry,
                                 callback=partial(takePhoto, location='kitchen', goal_publisher=goal_publisher))

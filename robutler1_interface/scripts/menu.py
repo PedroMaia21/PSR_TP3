@@ -3,15 +3,18 @@
 import rospy
 import tkinter as tk
 from std_srvs.srv import Empty
+from geometry_msgs.msg import PoseStamped
 from subprocess import Popen
 import rospkg
 import time
-
+from mission.mission_manager import moveTo, lookFor
 
 class RobutlerUI:
     def __init__(self):
         # Initialize ROS node
         rospy.init_node('robutler_ui', anonymous=True)
+
+        self.goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)    
 
         rospack = rospkg.RosPack()
         bringup_package_path = rospack.get_path('robutler1_bringup')
@@ -59,6 +62,8 @@ class RobutlerUI:
 
         spawn_button = tk.Button(self.root, text="Spawn Object", command=self.spawn_object)
         clear_button = tk.Button(self.root, text="Clear Objects", command=self.clear_objects)
+        move_button = tk.Button(self.root, text="Move to location", command=self.move_to_location)
+        look_button = tk.Button(self.root, text="Look for object in location", command=self.look_for_object)
         respawn_button = tk.Button(self.root, text="Respawn Robot", command=self.respawn_robot)
         teleop_button = tk.Button(self.root, text="Start Teleop", command=self.start_teleop)
         picture_button = tk.Button(self.root, text="Take Picture", command=self.take_picture)
@@ -89,6 +94,8 @@ class RobutlerUI:
 
         spawn_button.pack(pady=10)
         clear_button.pack(pady=10)
+        move_button.pack(pady=10)
+        look_button.pack(pady=10)
         respawn_button.pack(pady=10)
         teleop_button.pack(pady=10)
         picture_button.pack(pady=10)
@@ -147,10 +154,66 @@ class RobutlerUI:
             Popen(picture_command)
         except Exception as e:
             rospy.logerr("Error executing take picture command: %s", str(e))
+    
+    def move_to_location(self):
+        selected_location = self.selected_location.get()
+
+        #problems with comaptibility between scripts
+        if selected_location == 'on_bed':
+            selected_location = 'bed'
+        if selected_location == 'on_bed_side_table':
+            selected_location = 'bed side table'
+        if selected_location == 'on_desk':
+            selected_location = 'desk'
+        if selected_location == 'on_small_room':
+            selected_location = 'small room'
+        if selected_location == 'on_dinnig_table':
+            selected_location = 'dinning table'
+        if selected_location == 'on_bedroom_floor':
+            selected_location = 'bedroom'
+        if selected_location == 'random_in_house':
+            selected_location = 'house'
+
+        moveTo(feedback="Sub_process", location=selected_location, goal_publisher=self.goal_publisher)
+
+    def look_for_object(self):
+        selected_object = self.selected_object.get()
+        if selected_object == 'sphere_v':
+            selected_object = 'red ball'
+        if selected_object == 'bottle_red_wine':
+            selected_object = 'bottle'
+        if selected_object == 'coca_cola':
+            selected_object = 'can'
+        if selected_object == 'cube_b':
+            selected_object = 'blue cube'
+        if selected_object == 'human_female_4':
+            selected_object = 'woman'
+        if selected_object == 'human_male_4':
+            selected_object = 'man'
+        if selected_object == 'laptop_pc_1':
+            selected_object = 'laptop'
+        
+        selected_location = self.selected_location.get()
+        #problems with comaptibility between scripts
+        if selected_location == 'on_bed':
+            selected_location = 'bed'
+        if selected_location == 'on_bed_side_table':
+            selected_location = 'bed side table'
+        if selected_location == 'on_desk':
+            selected_location = 'desk'
+        if selected_location == 'on_small_room':
+            selected_location = 'small room'
+        if selected_location == 'on_dinnig_table':
+            selected_location = 'dinning table'
+        if selected_location == 'on_bedroom_floor':
+            selected_location = 'bedroom'
+        if selected_location == 'random_in_house':
+            selected_location = 'house'
+        lookFor(feedback="Sub_process", object=selected_object, spawn_location=selected_location, goal_publisher=self.goal_publisher)
 
     def run(self):
         # Run the Tkinter main loop
-        self.root.mainloop()
+        self.root.mainloop()        
 
 if __name__ == '__main__':
     robutler_ui = RobutlerUI()
