@@ -2,7 +2,7 @@
 <robot name="turtlebot3_manipulation" xmlns:xacro="http://ros.org/wiki/xacro">
 
   <!-- Include TurtleBot3 Waffle URDF -->
-  <xacro:include filename="$(find robutler1_description)/urdf/robutler1.urdf.xacro"/>
+  <xacro:include filename="$(find robutler1_description)/urdf/robutlerv2.urdf.xacro"/>
 
   <!-- Include OpenMANIPULATOR URDF -->
   <xacro:include filename="$(find robutler1_description)/urdf/open_manipulator_x.urdf.xacro"/>
