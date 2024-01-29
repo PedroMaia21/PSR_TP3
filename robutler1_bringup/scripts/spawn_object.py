@@ -22,7 +22,7 @@ def main():
                         help='Available locations are: on_bed; on_bed_side_table; on_desk; on_small_room; on_dinning_table; on_bedroom_floor; random_in_house;',
                         required=False, default='on_bed')
     parser.add_argument('-o', '--object', type=str,
-                        help='Available objects are: bottle_red_wine; coca_cola_cube_b; human_female_3; human_male_3; laptop_pc_1; shere_r;',
+                        help='Available objects are: bottle_red_wine; coca_cola_cube_b; human_female_4; human_male_4; laptop_pc_1; shere_r;',
                         required=False, default='sphere_r')
 
     args = vars(parser.parse_args())              # creates a dictionary
@@ -157,13 +157,13 @@ def main():
     f = open(package_path + 'cube_b/model.sdf', 'r')
     objects['cube_b'] = {'name': 'cube_b', 'sdf': f.read()}
 
-    # add object human_female_3
-    f = open(package_path + 'human_female_3/model.sdf', 'r')
-    objects['human_female_1'] = {'name': 'human_female_1', 'sdf': f.read()}
+    # add object human_female_4
+    f = open(package_path + 'human_female_4/model.sdf', 'r')
+    objects['human_female_4'] = {'name': 'human_female_4', 'sdf': f.read()}
 
-    # add object human_male_3
-    f = open(package_path + 'human_male_3/model.sdf', 'r')
-    objects['human_male_1_1'] = {'name': 'human_male_1_1', 'sdf': f.read()}
+    # add object human_male_4
+    f = open(package_path + 'human_male_4/model.sdf', 'r')
+    objects['human_male_4'] = {'name': 'human_male_4', 'sdf': f.read()}
 
     # add object laptop_pc_1
     f = open(package_path + 'laptop_pc_1/model.sdf', 'r')
