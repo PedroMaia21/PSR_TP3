@@ -20,6 +20,7 @@ class RobutlerUI:
         self.spawn_script_path = f'{bringup_package_path}/scripts/spawn_object.py'
         self.clear_script_path = f'{bringup_package_path}/scripts/clear_spawned_objects.py'
         self.respawn_script_path = f'{bringup_package_path}/scripts/respawn_robot.py'
+        self.picture_script_path = f'{bringup_package_path}/scripts/photo.py'
         self.teleop_script_path = f'{navigation_package_path}/scripts/teleop/new_teleop_key.py'
 
         # Create a Tkinter window
@@ -60,6 +61,7 @@ class RobutlerUI:
         clear_button = tk.Button(self.root, text="Clear Objects", command=self.clear_objects)
         respawn_button = tk.Button(self.root, text="Respawn Robot", command=self.respawn_robot)
         teleop_button = tk.Button(self.root, text="Start Teleop", command=self.start_teleop)
+        picture_button = tk.Button(self.root, text="Take Picture", command=self.take_picture)
 
         # Arrange GUI components
         object_label.pack(pady=5)
@@ -89,6 +91,7 @@ class RobutlerUI:
         clear_button.pack(pady=10)
         respawn_button.pack(pady=10)
         teleop_button.pack(pady=10)
+        picture_button.pack(pady=10)
 
     def spawn_object(self):
         # Get the selected object, location, and spawn quantity
@@ -135,6 +138,15 @@ class RobutlerUI:
             Popen(teleop_command)
         except Exception as e:
             rospy.logerr("Error executing teleop command: %s", str(e))
+
+    def take_picture(self):
+        # Implement the logic to start the teleoperation script
+        picture_command = ['python3', self.picture_script_path]
+
+        try:
+            Popen(picture_command)
+        except Exception as e:
+            rospy.logerr("Error executing take picture command: %s", str(e))
 
     def run(self):
         # Run the Tkinter main loop
