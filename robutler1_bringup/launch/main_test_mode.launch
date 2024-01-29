@@ -1,0 +1,19 @@
+<launch>
+    <!--Launch gazebo-->
+    <include file="$(find robutler1_bringup)/launch/gazebo_test_mode.launch"/>
+
+    <!--Launch localization-->
+    <include file="$(find robutler1_navigation)/launch/localization.launch"/>
+
+    <!--Spawn the robutler-->
+    <include file="$(find robutler1_bringup)/launch/bringup.launch"/>
+
+    <!--Launch navigation-->
+    <include file="$(find robutler1_navigation)/launch/navigation.launch"/>
+
+    <!--Launch detection-->
+    <include file="$(find robutler1_navigation)/launch/detection.launch"/>
+
+    <!--Launch mission manager-->
+    <node pkg="robutler1_navigation" type="mission_manager.py" name="mission_manager" output="screen"/>
+</launch>

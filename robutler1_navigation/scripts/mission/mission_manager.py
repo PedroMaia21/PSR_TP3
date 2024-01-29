@@ -40,7 +40,7 @@ locations = {
     'living room view': {'x': 4.491955, 'y': 1.006725, 'z': 0, 'R': 0, 'P': 0, 'Y': -2.463953},
     'gym': {'x': 1.650620, 'y': 4.189130, 'z': 0, 'R': 0, 'P': 0, 'Y': -0.865260},
     'gym view': {'x': -1.930821, 'y': 0.729338, 'z': 0, 'R': 0, 'P': 0, 'Y': 0.613104},
-    'next to desk': {'x': -7.899468, 'y': 0.981056, 'z': 0, 'R': 0, 'P': 0, 'Y': 2.489528},
+    'next to the desk': {'x': -7.899468, 'y': 0.981056, 'z': 0, 'R': 0, 'P': 0, 'Y': 2.489528},
 }
 
 spawn_locations = {
@@ -58,8 +58,8 @@ objects = {
     'bottle': {'name': 'bottle_red_wine','search_name': 'bottle', 'color': 'all'},
     'can': {'name': 'coca_cola','search_name': 'cup', 'color': 'all'},
     'blue cube': {'name': 'cube_b','search_name': 'box', 'color': 'blue'}, #needs checking the search name
-    'woman': {'name': 'human_female_1','search_name': 'person', 'color': 'all'},
-    'man': {'name': 'human_male_1_1', 'search_name': 'person', 'color': 'all'},
+    'woman': {'name': 'human_female_4','search_name': 'person', 'color': 'all'},
+    'man': {'name': 'human_male_4', 'search_name': 'person', 'color': 'all'},
     'laptop': {'name': 'laptop_pc_1', 'search_name': 'laptop', 'color': 'all'}
 }
 
@@ -203,7 +203,7 @@ def lookFor(feedback, object, spawn_location, goal_publisher):
     if spawn_location == 'bed' or spawn_location == 'bed side table':
         location = ['bedroom']
     elif spawn_location == 'desk':
-        location = ['next to desk']
+        location = ['next to the desk']
     elif spawn_location == 'dinning table':
         location = ['kitchen view']
     elif spawn_location == 'house':
