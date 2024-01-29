@@ -216,7 +216,7 @@ def lookFor(feedback, object, spawn_location, goal_publisher):
 
         #lastly it checks - must be added the camera rotation here
         search_name = spawn_object['search_name']
-        package_path = rospack.get_path('robutler1_navigation')
+        package_path = rospack.get_path('robutler1_detection')
         script_path = os.path.join(package_path, 'scripts/perception/object_detection.py')
         spawn_arguments = ['--object', search_name]
         
@@ -246,7 +246,7 @@ def resultCallback(msg):
     
 def run_script(object_color):
     # Start the script in a separate process
-    package_path = rospack.get_path('robutler1_navigation')
+    package_path = rospack.get_path('robutler1_detection')
     script_path = os.path.join(package_path, 'scripts/perception/color_segmentation.py')
     color_arguments = ['--color', object_color]
     command = ['python3', script_path] + color_arguments
